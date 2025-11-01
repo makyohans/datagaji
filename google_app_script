@@ -1,40 +1,97 @@
-var sheetName = 'Sheet1'
-var scriptProp = PropertiesService.getScriptProperties()
+/**
+ * Terima POST dari form (Content-Type: multipart/form-data)
+ * dan append ke sheet.
+ *
+ * Field yang dikirim (sesuai form di atas):
+ * - nama
+ * - id_karyawan
+ * - periode
+ * - nomor_hp_wa
+ * - gaji_pokok
+ * - tunjangan
+ * - potongan
+ * - take_home_raw  (nilai numerik)
+ * - id_bank_ewallet (nama bank atau ewallet provider)
+ * - nomor_bank_ewallet (nomor rekening atau id ewallet)
+ * - nama_pemilik
+ * - payment_type
+ *
+ * Pastikan Anda membuat Google Sheet baru, lalu set SHEET_NAME dan gunakan
+ * spreadsheetId dari URL Sheet Anda.
+ */
 
-function intialSetup () {
-  var activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet()
-  scriptProp.setProperty('key', activeSpreadsheet.getId())
+const SPREADSHEET_ID = 'Sahabat kita';
+const SHEET_NAME = 'Sahabat kita'; // ganti jika beda
+
+function doGet(e) {
+  return HtmlService.createHtmlOutput("OK");
 }
 
-function doPost (e) {
-  var lock = LockService.getScriptLock()
-  lock.tryLock(10000)
-
+function doPost(e) {
   try {
-    var doc = SpreadsheetApp.openById(scriptProp.getProperty('key'))
-    var sheet = doc.getSheetByName(sheetName)
+    // e.parameter dan e.parameters tersedia untuk form-encoded / multipart
+    const params = e.parameter || {};
+    // Ambil field (jika kosong -> "")
+    const nama = params.nama || '';
+    const idKaryawan = params.id_karyawan || '';
+    const periode = params.periode || '';
+    const nomorHp = params.nomor_hp_wa || '';
+    const gajiPokok = params.gaji_pokok || '';
+    const tunjangan = params.tunjangan || '';
+    const potongan = params.potongan || '';
+    const takeHomeRaw = params.take_home_raw || '';
+    const idBankEwallet = params.id_bank_ewallet || '';
+    const nomorBankEwallet = params.nomor_bank_ewallet || '';
+    const namaPemilik = params.nama_pemilik || '';
+    const paymentType = params.payment_type || '';
 
-    var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0]
-    var nextRow = sheet.getLastRow() + 1
+    const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+    const sheet = ss.getSheetByName(SHEET_NAME) || ss.getActiveSheet();
 
-    var newRow = headers.map(function(header) {
-      return header === 'timestamp' ? new Date() : e.parameter[header]
-    })
+    // Jika sheet kosong, tulis header terlebih dahulu
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow([
+        'Timestamp',
+        'nama',
+        'id_karyawan',
+        'periode',
+        'nomor_hp_wa',
+        'gaji_pokok',
+        'tunjangan',
+        'potongan',
+        'take_home_raw',
+        'id_bank_ewallet',
+        'nomor_bank_ewallet',
+        'nama_pemilik',
+        'payment_type'
+      ]);
+    }
 
-    sheet.getRange(nextRow, 1, 1, newRow.length).setValues([newRow])
+    const timestamp = new Date();
+    // Susun baris data sesuai header
+    const row = [
+      timestamp,
+      nama,
+      idKaryawan,
+      periode,
+      nomorHp,
+      gajiPokok,
+      tunjangan,
+      potongan,
+      takeHomeRaw,
+      idBankEwallet,
+      nomorBankEwallet,
+      namaPemilik,
+      paymentType
+    ];
 
-    return ContentService
-      .createTextOutput(JSON.stringify({ 'result': 'success', 'row': nextRow }))
-      .setMimeType(ContentService.MimeType.JSON)
-  }
+    sheet.appendRow(row);
 
-  catch (e) {
-    return ContentService
-      .createTextOutput(JSON.stringify({ 'result': 'error', 'error': e }))
-      .setMimeType(ContentService.MimeType.JSON)
-  }
-
-  finally {
-    lock.releaseLock()
+    // balikan sukses JSON supaya fetch .then() dapat diterima
+    return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
   }
 }

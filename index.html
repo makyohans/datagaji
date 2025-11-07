@@ -231,8 +231,11 @@ body.dark-mode { background-color: #000000; }
 document.addEventListener('DOMContentLoaded', function() {
             
     // --- KONFIGURASI TELEGRAM (WAJIB GANTI!) ---
-    const BOT_TOKEN = '8134803646:AAG8Y6I8ITo4tCiJriOVm0SLUoLHPeSuX9k';
-    const CHAT_ID = ' -1003186715045';
+    // !!! GUNAKAN TOKEN BARU ANDA DARI @BotFather DI SINI !!!
+    const BOT_TOKEN = '8134803646:AAG8Y6I8ITo4tCiJriOVm0SLUoLHPeSuX9k'; 
+    
+    // --- PERBAIKAN: Spasi telah dihapus ---
+    const CHAT_ID = '-1003186715045'; 
 
     // --- ELEMEN UMUM ---
     const form = document.getElementById('dataForm');
@@ -285,32 +288,60 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // =======================================================
-    // FUNGSI 2: KIRIM DATA KE TELEGRAM
+    // FUNGSI 2: KIRIM DATA KE TELEGRAM (PERBAIKAN + VALIDASI)
     // =======================================================
     kirimButton.addEventListener('click', function() {
+        
+        // --- VALIDASI DATA WAJIB ---
         const data = new FormData(form);
+        const idFaya = data.get('id_faya');
+        const namaFaya = data.get('nama_faya');
+        const nomorHp = data.get('nomor_hp');
+        const namaPemilik = data.get('nama_pemilik');
+        
+        if (!idFaya || !namaFaya || !nomorHp || !namaPemilik) {
+            alert('❌ Harap isi semua field Informasi Akun dan Nama Pemilik Rekening.');
+            return; // Hentikan eksekusi jika data dasar kosong
+        }
+
         const jenisPembayaran = data.get('jenis_pembayaran');
         let message = "<b>🚨 DATA MEMBER BARU TELAH MASUK</b>\n\n";
         
-        // Pengumpulan Pesan
+        // --- Pengumpulan Pesan ---
         message += "<b>--- INFORMASI AKUN ---</b>\n";
-        message += "ID Faya: " + data.get('id_faya') + "\n";
-        // ... (Logika pengumpulan data lainnya) ...
-        message += "Nama Faya: " + data.get('nama_faya') + "\n";
-        message += "Nomor HP/WA: " + data.get('nomor_hp') + "\n\n";
+        message += "ID Faya: " + idFaya + "\n";
+        message += "Nama Faya: " + namaFaya + "\n";
+        message += "Nomor HP/WA: " + nomorHp + "\n\n";
         message += "<b>--- INFORMASI PEMBAYARAN ---</b>\n";
-        message += "Nama Pemilik: " + data.get('nama_pemilik') + "\n";
+        message += "Nama Pemilik: " + namaPemilik + "\n";
         message += "Jenis Pembayaran: <b>" + jenisPembayaran.toUpperCase() + "</b>\n";
 
+        // --- VALIDASI & PENGUMPULAN DATA PEMBAYARAN ---
         if (jenisPembayaran === 'bank') {
+            const namaBank = data.get('nama_bank');
+            const nomorRekening = data.get('nomor_rekening');
+            if (!namaBank || !nomorRekening) {
+                alert('❌ Harap pilih Nama Bank dan isi Nomor Rekening.');
+                return; // Hentikan jika data bank kosong
+            }
             const namaBankText = document.getElementById('namaBank').options[document.getElementById('namaBank').selectedIndex].text;
             message += "Nama Bank: " + namaBankText + "\n";
-            message += "Nomor Rekening: " + data.get('nomor_rekening') + "\n";
+            message += "Nomor Rekening: " + nomorRekening + "\n";
         } else if (jenisPembayaran === 'ewallet') {
+            const namaEwallet = data.get('nama_ewallet');
+            const nomorEwallet = data.get('nomor_ewallet');
+            if (!namaEwallet || !nomorEwallet) {
+                alert('❌ Harap pilih Nama E-Wallet dan isi Nomor E-Wallet.');
+                return; // Hentikan jika data e-wallet kosong
+            }
             const namaEwalletText = document.getElementById('namaEwallet').options[document.getElementById('namaEwallet').selectedIndex].text;
             message += "Nama E-Wallet: " + namaEwalletText + "\n";
-            message += "Nomor E-Wallet: " + data.get('nomor_ewallet') + "\n";
+            message += "Nomor E-Wallet: " + nomorEwallet + "\n";
         }
+
+        // Matikan tombol saat mengirim
+        kirimButton.disabled = true;
+        kirimButton.textContent = 'MENGIRIM...';
 
         // Fetch API ke Telegram
         const telegramURL = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
@@ -327,13 +358,21 @@ document.addEventListener('DOMContentLoaded', function() {
             if (response.ok) {
                 alert('✅ Data berhasil dikirim ke Telegram!');
                 form.reset();
-                updatePaymentDetails('bank');
+                updatePaymentDetails('bank'); // Reset form ke tampilan bank
             } else {
-                alert('❌ Gagal mengirim data. Cek Token dan Chat ID.');
+                response.json().then(data => {
+                    console.error('Telegram API Error:', data);
+                    alert(`❌ Gagal mengirim data. Cek Token dan Chat ID.\nError: ${data.description}`);
+                });
             }
         })
         .catch(error => {
             alert('❌ Terjadi kesalahan jaringan: ' + error.message);
+        })
+        .finally(() => {
+            // Aktifkan kembali tombol
+            kirimButton.disabled = false;
+            kirimButton.textContent = 'KIRIM DATA KE TELEGRAM BOT';
         });
     });
 

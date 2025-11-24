@@ -24,7 +24,7 @@ body {
     padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid #e9ecef;
 }
 .header-logo { flex-grow: 1; text-align: center; }
-.header-logo img { height: 40px; max-width: 100%; }
+.header-logo img { height: 80px; max-width: 100%; }
 .menu-toggle, .theme-toggle { font-size: 1.5rem; color: #1a2a3a; cursor: pointer; padding: 5px; }
 .sidebar {
     height: 100%; width: 0; position: fixed; z-index: 1000; top: 0; left: 0;
@@ -78,17 +78,21 @@ h4 { color: #343a40; margin-bottom: 16px; }
 /* == CSS KHUSUS CASBON & PENYEMPURNAAN TAMPILAN BARU == */
 /* ==================================================== */
 
-/* --- BARU: STYLE UNTUK TOMBOL KOIN CASBON --- */
+/* --- BARU: STYLE UNTUK TOMBOL KOIN CASBON (FINAL) --- */
 
 .coin-option-group {
     display: flex;
-    flex-wrap: wrap; /* Memungkinkan tombol pecah ke baris baru */
+    flex-wrap: wrap; 
     gap: 10px;
-    margin-top: 10px;
+    /* Tambah margin di atas untuk memberi ruang ikon */
+    margin-top: 25px; 
 }
 
 .coin-button {
-    padding: 10px 15px;
+    position: relative; /* PENTING: Untuk menempatkan ikon di luar */
+    
+    /* Padding di bagian atas lebih besar karena ikon berada di sana */
+    padding: 20px 15px 10px 15px; 
     border: 2px solid #ced4da;
     border-radius: 8px;
     text-align: center;
@@ -96,9 +100,8 @@ h4 { color: #343a40; margin-bottom: 16px; }
     font-weight: 600;
     color: #495057;
     transition: all 0.2s;
-    flex-basis: calc(50% - 5px); /* Dua tombol per baris */
+    flex-basis: calc(50% - 5px); 
     box-sizing: border-box;
-    /* Efek hover lembut */
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
@@ -108,7 +111,7 @@ h4 { color: #343a40; margin-bottom: 16px; }
     color: white; 
     border-color: #00a896; 
     box-shadow: 0 3px 6px rgba(0, 168, 150, 0.3);
-    transform: translateY(-1px); /* Efek kecil saat dipilih */
+    transform: translateY(-1px); 
 }
 
 .coin-button:hover:not(.active) {
@@ -116,12 +119,38 @@ h4 { color: #343a40; margin-bottom: 16px; }
     border-color: #adb5bd;
 }
 
+
+/* --- GAYA UNTUK KONTEN DUA BARIS (Koin di atas, Rupiah di bawah) --- */
+.coin-content {
+    display: flex;
+    flex-direction: column; /* Koin di atas Rupiah di bawah */
+    align-items: center;
+    line-height: 1.2;
+}
+.coin-value {
+    font-size: 1.1em;
+    font-weight: 700; 
+    color: inherit; 
+    margin-bottom: 2px;
+}
+.rupiah-value {
+    font-size: 0.9em;
+    font-weight: 400;
+    color: #6c757d; 
+}
+/* Penyesuaian warna saat tombol aktif */
+.coin-button.active .coin-value,
+.coin-button.active .rupiah-value {
+    color: white; 
+}
+
+
 .selection-display {
     margin-top: 20px;
     font-size: 1em;
     font-weight: 500;
     color: #343a40;
-    text-align: center; /* Pilihan ditampilkan di tengah */
+    text-align: center; 
     padding: 10px;
     border-radius: 8px;
     background-color: #f8f9fa;
@@ -131,24 +160,55 @@ h4 { color: #343a40; margin-bottom: 16px; }
     color: #00a896;
 }
 
+/* --- GAYA UNTUK ICON KOIN DI SUDUT KIRI ATAS --- */
+.coin-icon {
+    position: absolute;
+    /* Posisikan di sudut kiri atas, ditarik keluar dari border */
+    top: -12px; 
+    left: -12px; 
+    transform: none; /* Hapus centering */
+    
+    font-size: 1.2rem; 
+    color: #ffc107; 
+    
+    background-color: #fff; 
+    border-radius: 50%;
+    padding: 6px; 
+    line-height: 1; 
+    border: 3px solid #ffc107; 
+    
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+    transition: all 0.2s;
+}
+
+/* Penyesuaian ikon saat tombol aktif/dipilih */
+.coin-button.active .coin-icon {
+    color: #fff; 
+    background-color: #00a896; 
+    border-color: #fff; 
+    transform: scale(1.1); /* Efek membesar */
+}
+
+
 /* --- KOTAK INFO --- */
 .info-box {
-    background-color: #fff3cd; /* Warna kuning muda untuk peringatan */
-    color: #856404; /* Warna teks gelap */
+    background-color: #fff3cd; 
+    color: #856404; 
     border: 1px solid #ffeeba;
     padding: 15px;
     border-radius: 8px;
     margin-top: 20px;
     display: flex;
-    align-items: flex-start; /* Mengatur alignment ke atas agar ikon sejajar dengan baris pertama */
+    align-items: flex-start; 
     font-size: 0.9em;
 }
 
 .info-box i {
     font-size: 1.5em;
     margin-right: 10px;
-    color: #e3a900; /* Ikon lebih gelap */
-    margin-top: 2px; /* Penyesuaian kecil */
+    color: #e3a900; 
+    margin-top: 2px; 
 }
 
 /* ==================================================== */
@@ -223,4 +283,17 @@ body.dark-mode .selection-display {
 }
 body.dark-mode .selection-display span {
     color: #00a896;
+}
+
+/* --- DARK MODE: GAYA UNTUK ICON DI SUDUT KIRI ATAS --- */
+body.dark-mode .coin-icon {
+    background-color: #1e1e1e; 
+    border-color: #ffc107;
+}
+
+body.dark-mode .coin-button.active .coin-icon {
+    color: white; 
+    background-color: #00a896;
+    border-color: white;
+    transform: scale(1.1);
 }

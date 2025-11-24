@@ -3,9 +3,9 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0; padding: 0; display: flex; justify-content: center;
     align-items: center; min-height: 100vh; transition: background-color 0.3s;
-    
+
     /* GANTI INI: URL Gambar Latar Belakang Anda */
-    background-image: url('Gambar1.png'); 
+    background-image: url('Gambar1.png');
     background-size: cover; background-position: center;
     background-repeat: no-repeat; background-attachment: fixed;
     background-color: #eef1f5;
@@ -16,7 +16,68 @@ body {
     background-color: rgba(255, 255, 255, 0.95); border-radius: 16px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); padding: 35px;
     width: 100%; max-width: 550px; box-sizing: border-box; transition: all 0.3s;
+    /* PENTING: Tambahkan padding bawah agar tidak tertutup Navbar Bawah */
+    padding-bottom: 80px; 
 }
+
+/* --- BARU: STYLE UNTUK FOOTER DAN VERIFIKASI (Dengan Gambar Centang) --- */
+.main-footer {
+    text-align: center;
+    padding: 20px 0;
+    color: #6c757d; /* Warna teks footer */
+    font-size: 0.85rem;
+    max-width: 550px; /* Batasi lebar agar sesuai dengan form */
+    width: 100%;
+    margin-top: 10px;
+    line-height: 1.6;
+}
+
+.verified-info {
+    margin-bottom: 10px;
+}
+
+.agency-name {
+    font-weight: 700;
+    color: #1a2a3a;
+    font-size: 1rem;
+    margin: 0 0 5px 0; /* Jarak antara nama agensi dan badge */
+}
+
+.verified-badge {
+    display: inline-flex; /* Agar konten di dalamnya sejajar */
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    color: #1a2a3a; /* Warna teks di dalam badge, agar kontras dengan gambar biru */
+    background-color: transparent; /* Hapus background karena gambar sudah ada */
+    border: 1px solid #ced4da; /* Tambah border tipis */
+    padding: 4px 15px;
+    border-radius: 20px; /* Bentuk pil/rounded */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow ringan */
+    margin: 0 auto;
+}
+
+.verified-image {
+    width: 30px; /* Ukuran gambar centang */
+    height: 30px;
+    margin-right: 6px; /* Jarak antara gambar dan teks */
+    vertical-align: middle; /* Memastikan gambar sejajar tengah dengan teks */
+}
+
+.footer-divider {
+    border: none;
+    border-top: 1px solid #e9ecef;
+    margin: 15px auto;
+    width: 50%; /* Garis pendek di tengah */
+}
+
+.publisher {
+    margin-top: 5px;
+    font-style: italic;
+    color: #999;
+}
+/* ------------------------------------------------ */
+
 
 /* == HEADER ATAS & SIDEBAR CSS == */
 .main-header {
@@ -56,8 +117,8 @@ hr { border: none; border-top: 1px solid #e9ecef; margin: 28px 0; }
 h4 { color: #343a40; margin-bottom: 16px; }
 .form-group { margin-bottom: 20px; }
 .form-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #495057; font-size: 0.95rem; }
-.form-group input, .form-group select { 
-    width: 100%; padding: 14px; border: 1px solid #ced4da; border-radius: 8px; box-sizing: border-box; transition: all 0.3s; 
+.form-group input, .form-group select {
+    width: 100%; padding: 14px; border: 1px solid #ced4da; border-radius: 8px; box-sizing: border-box; transition: all 0.3s;
 }
 .form-group input:focus, .form-group select:focus { outline: none; border-color: #00a896; box-shadow: 0 0 0 3px rgba(0, 168, 150, 0.2); }
 .payment-details { display: none; padding-top: 10px; }
@@ -82,17 +143,17 @@ h4 { color: #343a40; margin-bottom: 16px; }
 
 .coin-option-group {
     display: flex;
-    flex-wrap: wrap; 
+    flex-wrap: wrap;
     gap: 10px;
     /* Tambah margin di atas untuk memberi ruang ikon */
-    margin-top: 25px; 
+    margin-top: 25px;
 }
 
 .coin-button {
     position: relative; /* PENTING: Untuk menempatkan ikon di luar */
-    
+
     /* Padding di bagian atas lebih besar karena ikon berada di sana */
-    padding: 20px 15px 10px 15px; 
+    padding: 20px 15px 10px 15px;
     border: 2px solid #ced4da;
     border-radius: 8px;
     text-align: center;
@@ -100,18 +161,18 @@ h4 { color: #343a40; margin-bottom: 16px; }
     font-weight: 600;
     color: #495057;
     transition: all 0.2s;
-    flex-basis: calc(50% - 5px); 
+    flex-basis: calc(50% - 5px);
     box-sizing: border-box;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 /* Style saat tombol koin aktif/dipilih */
 .coin-button.active {
-    background-color: #00a896; 
-    color: white; 
-    border-color: #00a896; 
+    background-color: #00a896;
+    color: white;
+    border-color: #00a896;
     box-shadow: 0 3px 6px rgba(0, 168, 150, 0.3);
-    transform: translateY(-1px); 
+    transform: translateY(-1px);
 }
 
 .coin-button:hover:not(.active) {
@@ -129,19 +190,19 @@ h4 { color: #343a40; margin-bottom: 16px; }
 }
 .coin-value {
     font-size: 1.1em;
-    font-weight: 700; 
-    color: inherit; 
+    font-weight: 700;
+    color: inherit;
     margin-bottom: 2px;
 }
 .rupiah-value {
     font-size: 0.9em;
     font-weight: 400;
-    color: #6c757d; 
+    color: #6c757d;
 }
 /* Penyesuaian warna saat tombol aktif */
 .coin-button.active .coin-value,
 .coin-button.active .rupiah-value {
-    color: white; 
+    color: white;
 }
 
 
@@ -150,7 +211,7 @@ h4 { color: #343a40; margin-bottom: 16px; }
     font-size: 1em;
     font-weight: 500;
     color: #343a40;
-    text-align: center; 
+    text-align: center;
     padding: 10px;
     border-radius: 8px;
     background-color: #f8f9fa;
@@ -164,51 +225,51 @@ h4 { color: #343a40; margin-bottom: 16px; }
 .coin-icon {
     position: absolute;
     /* Posisikan di sudut kiri atas, ditarik keluar dari border */
-    top: -12px; 
-    left: -12px; 
+    top: -12px;
+    left: -12px;
     transform: none; /* Hapus centering */
-    
-    font-size: 1.2rem; 
-    color: #ffc107; 
-    
-    background-color: #fff; 
+
+    font-size: 1.2rem;
+    color: #ffc107;
+
+    background-color: #fff;
     border-radius: 50%;
-    padding: 6px; 
-    line-height: 1; 
-    border: 3px solid #ffc107; 
-    
+    padding: 6px;
+    line-height: 1;
+    border: 3px solid #ffc107;
+
     z-index: 10;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     transition: all 0.2s;
 }
 
 /* Penyesuaian ikon saat tombol aktif/dipilih */
 .coin-button.active .coin-icon {
-    color: #fff; 
-    background-color: #00a896; 
-    border-color: #fff; 
+    color: #fff;
+    background-color: #00a896;
+    border-color: #fff;
     transform: scale(1.1); /* Efek membesar */
 }
 
 
 /* --- KOTAK INFO --- */
 .info-box {
-    background-color: #fff3cd; 
-    color: #856404; 
+    background-color: #fff3cd;
+    color: #856404;
     border: 1px solid #ffeeba;
     padding: 15px;
     border-radius: 8px;
     margin-top: 20px;
     display: flex;
-    align-items: flex-start; 
+    align-items: flex-start;
     font-size: 0.9em;
 }
 
 .info-box i {
     font-size: 1.5em;
     margin-right: 10px;
-    color: #e3a900; 
-    margin-top: 2px; 
+    color: #e3a900;
+    margin-top: 2px;
 }
 
 /* ==================================================== */
@@ -221,7 +282,7 @@ h4 { color: #343a40; margin-bottom: 16px; }
     padding: 20px; box-sizing: border-box; opacity: 0; transition: opacity 0.3s ease;
 }
 .modal.show {
-    display: flex; opacity: 1; 
+    display: flex; opacity: 1;
 }
 .modal-content {
     display: block; max-width: 90%; max-height: 90%; border-radius: 8px;
@@ -240,7 +301,8 @@ h4 { color: #343a40; margin-bottom: 16px; }
 
 body.dark-mode { background-color: #000000; }
 .dark-mode .form-container { background-color: rgba(30, 30, 30, 0.95); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8); }
-.dark-mode h3, .dark-mode h4, .dark-mode .menu-toggle i, .dark-mode .theme-toggle i, .dark-mode .title-icon { color: #f1f1f1; }
+/* .dark-mode .menu-toggle i sudah dihapus dari HTML */
+.dark-mode h3, .dark-mode h4, .dark-mode .theme-toggle i, .dark-mode .title-icon { color: #f1f1f1; }
 .dark-mode p, .dark-mode .form-group label, .dark-mode .subtitle { color: #a0a0a0; }
 .dark-mode .form-group input, .dark-mode .form-group select { background-color: #2c2c2c; border-color: #444; color: #e0e0e0; }
 .dark-mode .form-group input:focus, .dark-mode .form-group select:focus { border-color: #00a896; box-shadow: 0 0 0 3px rgba(0, 168, 150, 0.4); }
@@ -250,8 +312,8 @@ body.dark-mode { background-color: #000000; }
 
 /* Dark Mode untuk Info Box (Casbon) */
 body.dark-mode .info-box {
-    background-color: #3b3a0f; 
-    color: #f7f7a8; 
+    background-color: #3b3a0f;
+    color: #f7f7a8;
     border-color: #4f4e1f;
 }
 
@@ -261,14 +323,14 @@ body.dark-mode .info-box i {
 
 /* --- DARK MODE: TOMBOL KOIN CASBON BARU --- */
 body.dark-mode .coin-button {
-    border-color: #444; 
-    color: #a0a0a0; 
+    border-color: #444;
+    color: #a0a0a0;
     background-color: #2c2c2c;
     box-shadow: none;
 }
 body.dark-mode .coin-button.active {
-    background-color: #00a896; 
-    color: white; 
+    background-color: #00a896;
+    color: white;
     border-color: #00a896;
     box-shadow: 0 3px 6px rgba(0, 168, 150, 0.3);
 }
@@ -287,13 +349,104 @@ body.dark-mode .selection-display span {
 
 /* --- DARK MODE: GAYA UNTUK ICON DI SUDUT KIRI ATAS --- */
 body.dark-mode .coin-icon {
-    background-color: #1e1e1e; 
+    background-color: #1e1e1e;
     border-color: #ffc107;
 }
 
 body.dark-mode .coin-button.active .coin-icon {
-    color: white; 
+    color: white;
     background-color: #00a896;
     border-color: white;
     transform: scale(1.1);
+}
+
+/* --- DARK MODE: FOOTER DAN VERIFIKASI (Dengan Gambar Centang) --- */
+body.dark-mode .main-footer {
+    color: #a0a0a0;
+}
+
+body.dark-mode .agency-name {
+    color: #f1f1f1;
+}
+
+body.dark-mode .verified-badge {
+    background-color: transparent; /* Tidak ada background */
+    color: #f1f1f1; /* Teks putih di Dark Mode */
+    border-color: #444; /* Border lebih gelap */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4); /* Shadow lebih gelap */
+}
+
+body.dark-mode .footer-divider {
+    border-top-color: #444;
+}
+
+body.dark-mode .publisher {
+    color: #6c757d;
+}
+/* --------------------------------------------------- */
+
+
+/* ==================================================== */
+/* == NAVBAR BAWAH (FIXED BOTTOM NAVIGATION) - BARU == */
+/* ==================================================== */
+
+.bottom-navbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 65px; /* Tinggi navbar */
+    background-color: #1a2a3a; /* Warna gelap */
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 999; /* Pastikan di atas semua elemen lain */
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #b0c4de; /* Warna ikon dan teks default */
+    font-size: 0.7rem; /* Ukuran teks kecil */
+    font-weight: 900;
+    transition: color 0.3s;
+    flex-grow: 1;
+    padding: 6px 0;
+}
+
+.nav-item i {
+    font-size: 1.3rem; /* Ukuran ikon */
+    margin-bottom: 10px;
+}
+
+/* Style untuk item navigasi yang aktif (halaman yang sedang dibuka) */
+.nav-item.active {
+    color: #00a896; /* Warna hijau/biru untuk yang aktif */
+}
+
+.nav-item:hover {
+    color: #ffffff;
+}
+
+/* == PENYESUAIAN DARK MODE UNTUK NAVBAR BAWAH == */
+
+body.dark-mode .bottom-navbar {
+    background-color: #0d0d0d;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.7);
+}
+
+body.dark-mode .nav-item {
+    color: #a0a0a0;
+}
+
+body.dark-mode .nav-item.active {
+    color: #00a896;
+}
+
+body.dark-mode .nav-item:hover {
+    color: #f1f1f1;
 }

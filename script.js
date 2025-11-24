@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-            
+
     // -------------------------------------------------------------------
     // --- KONFIGURASI TELEGRAM (WAJIB GANTI!) ---
     // -------------------------------------------------------------------
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const menuToggle = document.getElementById('menuToggle');
     const kirimButton = document.getElementById('kirimTelegram');
     const body = document.body;
-    
+
     // --- ELEMEN DINAMIS FORM DATA GAJI ---
     const btnBank = document.getElementById('btnBank');
     const btnEwallet = document.getElementById('btnEwallet');
@@ -27,10 +27,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- ELEMEN CASBON & NAVIGASI (DIREVISI) ---
     const casbonContent = document.getElementById('casbonContent');   // Konten Casbon
-    const casbonLink = document.getElementById('casbonLink');        // Link Casbon di sidebar
+    const casbonLink = document.getElementById('casbonLink');         // Link Casbon di sidebar
     const casbonForm = document.getElementById('casbonForm');
     const kirimCasbonButton = document.getElementById('kirimCasbonTelegram');
-    
+
     // --- BARU: ELEMEN KOIN CASBON (Tombol Pilihan) ---
     const coinOptionGroup = document.getElementById('coinOptionGroup');
     const jumlahCoinInput = document.getElementById('jumlahCoinInput');
@@ -39,7 +39,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- ELEMEN NAVIGASI HOME BARU ---
     const homeLink = document.getElementById('homeLink'); // Link HOME / DATA GAJI
-    
 
     // --- ELEMEN MODAL & THEME ---
     const imageModal = document.getElementById('imageModal');
@@ -48,32 +47,66 @@ document.addEventListener('DOMContentLoaded', function() {
     const themeToggle = document.getElementById('themeToggle');
     const themeIcon = document.getElementById('themeIcon');
     
-    
+    // --- BARU: ELEMEN NAVIGASI BAWAH ---
+    const navHomeBottom = document.getElementById('navHomeBottom');
+    const navCasbonBottom = document.getElementById('navCasbonBottom');
+    const allNavItems = document.querySelectorAll('.bottom-navbar .nav-item'); // Semua item di navbar bawah
+
+
 // -------------------------------------------------------------------
 // 1. FUNGSI NAVIGASI: PENGGANTIAN KONTEN (HOME/DATA GAJI vs CASBON)
 // -------------------------------------------------------------------
 
-    // Menampilkan Form HOME / DATA GAJI saat link 'HOME' diklik
+    function showContent(contentType) {
+        if (contentType === 'home') {
+            if (casbonContent) casbonContent.style.display = 'none';
+            if (dataGajiContent) dataGajiContent.style.display = 'block';
+            setActiveNav(navHomeBottom);
+        } else if (contentType === 'casbon') {
+            if (dataGajiContent) dataGajiContent.style.display = 'none';
+            if (casbonContent) casbonContent.style.display = 'block';
+            setActiveNav(navCasbonBottom);
+        }
+    }
+
+    function setActiveNav(activeElement) {
+        allNavItems.forEach(item => {
+            item.classList.remove('active');
+        });
+        if (activeElement) {
+            activeElement.classList.add('active');
+        }
+    }
+
+    // Event listener Sidebar (TETAP)
     if (homeLink) {
         homeLink.addEventListener('click', function(e) {
             e.preventDefault();
             sidebar.style.width = '0'; // Tutup sidebar
-            
-            // Tampilkan Data Gaji, Sembunyikan Casbon
-            if (casbonContent) casbonContent.style.display = 'none';
-            if (dataGajiContent) dataGajiContent.style.display = 'block';
+            showContent('home');
         });
     }
-    
-    // Menampilkan Form CASBON saat link 'CASBON' diklik
+
     if (casbonLink) {
         casbonLink.addEventListener('click', function(e) {
             e.preventDefault();
             sidebar.style.width = '0'; // Tutup sidebar
-            
-            // Sembunyikan Data Gaji, Tampilkan Casbon
-            if (dataGajiContent) dataGajiContent.style.display = 'none';
-            if (casbonContent) casbonContent.style.display = 'block';
+            showContent('casbon');
+        });
+    }
+
+    // Event listener Navbar Bawah (BARU)
+    if (navHomeBottom) {
+        navHomeBottom.addEventListener('click', function(e) {
+            e.preventDefault();
+            showContent('home');
+        });
+    }
+    
+    if (navCasbonBottom) {
+        navCasbonBottom.addEventListener('click', function(e) {
+            e.preventDefault();
+            showContent('casbon');
         });
     }
 
@@ -105,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (btnBank && btnEwallet) {
         btnBank.addEventListener('click', () => updatePaymentDetails('bank'));
         btnEwallet.addEventListener('click', () => updatePaymentDetails('ewallet'));
-        updatePaymentDetails('bank'); // Inisialisasi awal
+        // updatePaymentDetails('bank'); // Inisialisasi awal dipindahkan ke bagian bawah (seksi 8)
     }
 
 
@@ -288,16 +321,21 @@ if (coinOptionGroup) {
             // Tambahkan kelas 'active' ke tombol yang diklik
             this.classList.add('active');
 
+            const coinElement = this.querySelector('.coin-value');
+            const rupiahElement = this.querySelector('.rupiah-value');
+
             const selectedCoin = this.getAttribute('data-coin');
             const selectedRupiah = this.getAttribute('data-rupiah');
-            const displayText = this.textContent.trim(); // Ambil teks tombol
+            
+            // Mengambil teks yang diformat dengan dua baris dari elemen .coin-content
+            const displayText = `${coinElement.textContent} (${rupiahElement.textContent})`;
 
             // Set nilai ke input tersembunyi
             jumlahCoinInput.value = selectedCoin;
             jumlahRupiahInput.value = selectedRupiah;
             
             // Tampilkan pilihan
-            selectedCoinDisplay.textContent = displayText;
+            selectedCoinDisplay.innerHTML = `<span>${displayText}</span>`;
         });
     });
 }
@@ -355,4 +393,25 @@ if (coinOptionGroup) {
         body.classList.remove('dark-mode');
         themeIcon.classList.replace('fa-moon', 'fa-sun'); // Terapkan ikon matahari
     }
+
+// -------------------------------------------------------------------
+// 8. INISIALISASI AWAL (Pastikan konten dan nav aktif sudah benar) - BARU
+// -------------------------------------------------------------------
+
+    // 1. Tampilkan konten HOME/DATA GAJI secara default
+    if (dataGajiContent) {
+        dataGajiContent.style.display = 'block';
+    }
+    if (casbonContent) {
+        casbonContent.style.display = 'none';
+    }
+
+    // 2. Set navigasi bawah 'Home' sebagai aktif
+    setActiveNav(navHomeBottom);
+
+    // 3. Set detail pembayaran default (Bank)
+    if (btnBank && btnEwallet) {
+        updatePaymentDetails('bank');
+    }
+
 });
